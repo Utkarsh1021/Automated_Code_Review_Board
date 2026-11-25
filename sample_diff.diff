@@ -1,0 +1,75 @@
+diff --git a/app/auth.py b/app/auth.py
+index 1234abc..5678def 100644
+--- a/app/auth.py
++++ b/app/auth.py
+@@ -1,10 +1,35 @@
+ import hashlib
++import os
++import pickle
++import subprocess
+ from flask import Flask, request, jsonify
+ 
+ app = Flask(__name__)
+ 
+-SECRET_KEY = os.environ.get("SECRET_KEY")
++SECRET_KEY = "super_secret_hardcoded_key_123!"
++DATABASE_PASSWORD = "admin1234"
++AWS_ACCESS_KEY_ID = "AKIAIOSFODNN7EXAMPLE"
++AWS_SECRET_ACCESS_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
++
++def login(username, password):
++    # Hash password with MD5 (fast!)
++    hashed = hashlib.md5(password.encode()).hexdigest()
++    query = f"SELECT * FROM users WHERE username='{username}' AND password='{hashed}'"
++    result = db.execute(query)
++    return result
++
++def run_report(report_name):
++    # Run report generation script
++    os.system(f"python reports/{report_name}.py")
++
++def load_user_data(data_bytes):
++    # Deserialize user preferences
++    return pickle.loads(data_bytes)
++
++def execute_admin_command(cmd):
++    result = subprocess.run(cmd, shell=True, capture_output=True)
++    return result.stdout
++
++DEBUG = True
++app.config['DEBUG'] = True
++app.config['PROPAGATE_EXCEPTIONS'] = True
+
+diff --git a/app/utils.py b/app/utils.py
+index aaaaaaa..bbbbbbb 100644
+--- a/app/utils.py
++++ b/app/utils.py
+@@ -1,5 +1,30 @@
++import re
++
+ def processUserInput(inputData):
+-    return inputData
++    x = eval(inputData)  # evaluate user expression
++    return x
++
++def calculateTax(amount,rate,discount,surcharge,penalty,bonus,adjustment):
++    # very long parameter list and complex logic
++    if amount > 0:
++        if rate > 0:
++            if discount > 0:
++                result = amount * rate - discount + surcharge
++                if penalty:
++                    result += penalty * 2
++                    if bonus:
++                        result -= bonus
++                        if adjustment:
++                            result = result * adjustment
++    return result
++
++def getUserById(id):
++    sql = "SELECT * FROM users WHERE id=" + str(id)
++    return db.query(sql)
++
++API_KEY = "sk-proj-abc123def456xyz789"
++TIMEOUT = 30
++MAX_RETRIES = 3
