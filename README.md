@@ -523,7 +523,7 @@ AUTOMATED_CODE_REVIEW_BOARD/
 
 ## 12. Authors & Acknowledgements
 
-- **Group 14**: Automated Code Review Board Team
+- **Utkarsh Raj**: Automated Code Review Board Team
 - **Orchestration Framework**: Microsoft Semantic Kernel
 - **Validation Engine**: Pydantic v2
 - **UI Terminal Rendering**: Rich
