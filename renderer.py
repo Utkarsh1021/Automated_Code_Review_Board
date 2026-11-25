@@ -21,7 +21,7 @@ from rich import box
 from models.finding import Finding, Severity
 from models.shared_state import ConsolidatedReview, MergeRecommendation
 
-console = Console()
+console = Console(force_terminal=True, legacy_windows=False)
 
 
 # ─── Colour map ───────────────────────────────────────────────────────────────
